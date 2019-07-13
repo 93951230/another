@@ -1,144 +1,21 @@
-<!doctype html>
-<html oncontextmenu="return false;">
+<html>
 	<head>
-		<title id = "titile">unknown LA</title>
-		<meta name="author" content="93951230">
-		<meta name="description" content="useless game">
-		<meta name="keywords" content="qazwsxedc9395">
-		<style>
-			canvas
-			{
-				cursor: crosshair;
-				position: absolute;
-				top: 0%;
-				left: 0%;
-			}
-		</style>
 	</head>
-    <body>
-        <noscript>
-            <bold>
-                enable JavaScript or begone.
-            </bold>
-        </noscript>
-        <img id="dirt_1" style="display: none;" src="resource/block/dirt_1.png" />
-        <img id="dirt_2" style="display: none;" src="resource/block/dirt_2.png" />
-        <img id="rock" style="display: none;" src="resource/block/rock.png" />
-        <img id="grass" style="display: none;" src="resource/block/grass.png">
-        <img id="normal_tree" style="display: none;" src="resource/block/normal_tree.png">
-		<!--BLOCK-->
-        <img id="startImg" style="display: none;" src="resource/gui/start.png">
-        <img id="background" style="display: none;" src="resource/gui/background.png">
-		<img id="itembar" style="display: none;" src="resource/gui/itembar.png" />
-		<img id="itembar_2" style="display: none;" src="resource/gui/itembar_2.png" />
-		<img id="itembarin" style="display: none;" src="resource/gui/itembar_in.png" />
-		<img id="inButton" style="display: none;" src="resource/gui/in_button.png" />
-		<img id="inButtonOpen" style="display: none;" src="resource/gui/in_button_open.png" />
-		<!--GUI-->
-		<img id="character" style="display: none;" src="resource/entity/character.png" />
-        <!--ENTITY-->
-		<img id="dirt_1_drop" style="display: none;" src="resource/item/dirt_1_drop.png" />
-		<img id="dirt_2_drop" style="display: none;" src="resource/item/dirt_2_drop.png" />
-		<img id="grass_drop" style="display: none;" src="resource/item/grass_drop.png" />
-		<img id="normal_tree_drop" style="display: none;" src="resource/item/normal_tree_drop.png" />
-		<img id="iron_pickaxe" style="display: none;" src="resource/item/iron_pickaxe.png" />
-		<!--ITEM-->
-        <canvas id="Canvas" width="1366" height="768" />
-        <script src="scripts/variable.js"></script>
-        <script src="scripts/blocks.js"></script>
-        <script src="scripts/world_generate.js"></script>
-        <script src ="scripts/entity.js"></script>
-        <script id = "logicScript">
-            ////////////////////////////
-            //     method calling     //
-            ////////////////////////////
-			function buttonCir(e,getHurt,command) {
-				let Xcondition = ((e.clientX > (getHurt.x - (getHurt.width / 2))) && (e.clientX < (getHurt.x + (getHurt.width / 2))));
-                let Ycondition = ((e.clientY > (getHurt.y - (getHurt.height / 2))) && (e.clientY < (getHurt.y + (getHurt.height / 2))));
-				if ((Xcondition) && (Ycondition)) {
-                    eval(command);
-                }
+	<body onload="onload();" style="background-color:#1C1C1C;">
+		<textarea id ="form" style="width:300px;height:100px;position:absolute;top:60px;left:10px;font-family:Comic Sans MS;font-size:20px;">:D</textarea>
+		<button style= "background-color:#FF355D;position:absolute;top:10px;left:10px;width:130px;height:40px;font-family:Comic Sans MS;" onclick="end()">YEE</button>
+		<a id="output" style="position:absolute;top:10px;left:140px;"><font color="#FFFFFF">等待確認;/</span></a>
+		<script>
+			var onload = () => {txr = document.getElementById("form");a = document.getElementById("output");var itval = setInterval("main()",60);}
+			function main() {
+				txr.style.height = window.innerHeight-70;
+				txr.style.width = window.innerWidth-20;
 			}
-            function keyDownHandler(e) {
-                keyPressed[e.code] = true;
-            }
-            function keyUpHandler(e) {
-                keyPressed[e.code] = false;
-            }
-            function mouse(e) {
-                if (e.buttons == 1) {
-                    if (started) {
-						if (itembar[selectedBar].hold.type["type"] == 1)
-							for (i = (Math.round(CamX) - 3); i <= (Math.round(CamX) + 3); i++) {
-								for (j = (Math.floor(CamY - 2)); j <= (Math.floor(CamY + 4)); j++) {
-									breakBlockDete(e, (tiles[i])[-j].fill, "getHurt.breakTime -= 1;");
-								}
-							}
-						else {
-							for (i = (Math.round(CamX) - 3); i <= (Math.round(CamX) + 3); i++) {
-								for (j = (Math.floor(CamY - 2)); j <= (Math.floor(CamY + 4)); j++) {
-									breakBlockDete(e, (tiles[i])[-j].fill, "getHurt.breakTime -= 1;");
-								}
-							}
-						}
-						for (i = 0;i < buttons.length;i++) {
-							buttonCir(e,buttons[i],String(eval("buttons["+ i +"].command")))
-						}
-                    }
-                    else {
-                        let Xcondition = ((e.clientX > (startButton.x - (300 / 2))) && (e.clientX < (startButton.x + (300 / 2))));
-                        let Ycondition = ((e.clientY > (startButton.y - (50 / 2))) && (e.clientY < (startButton.y + (50 / 2))));
-                        if ((Xcondition) && (Ycondition)) {
-                            /////////////////////////////////////////////////////////////////////////////////////////start
-                            character.x = (canvas.width / 2);
-                            character.y = (canvas.height / 2);
-                            offset_X = Math.floor((canvas.width / 2) / 45);
-                            offset_Y = Math.floor((canvas.height / 2) / 45);
-                            generateWorld.main();
-                            ctx.font = "30px monospace";
-							buttons[buttons.length] = new publicButton([imgs["Gui"][4],imgs["Gui"][5]],420,32,18,45,"openIn = !openIn","if (openIn) { ctx.drawImage(this.drawImg[0], this.x-(this.width/2), this.y-(this.height/2));} else {ctx.drawImage(this.drawImg[1], this.x-(this.width/2), this.y-(this.height/2));}");
-                            started = true;
-                        }
-                    }
-                }
-            }
-            document.addEventListener("keydown", keyDownHandler, false);
-            document.addEventListener("keyup", keyUpHandler, false);
-            document.addEventListener("mousedown", mouse, false);
-			//document.addEventListener("mousemove", mouseMove, false);
-			function drawFont() {
-				ctx.fillStyle = "White";
-                ctx.fillText("Made by 80102 Weirdo :/", 10, canvas.height - 10);
-				ctx.fillStyle = "Black";
-            }
-        </script>
-        <script id="lastScript">
-            function rendering() {
-                if (started) {
-					ctx.clearRect(0, 0, canvas.width, canvas.height);
-					///////////////////////////////////////////////////////////////
-					///////////////////////////////////////////////////////////////
-					for (i = 0; i < itembar_amount;i++) {
-						itembar[i].draw();
-					}
-					ctx.font = "26px monospace";
-					drawFont();
-                }
-                else {
-					canvas.height = innerHeight;
-                    canvas.width = innerWidth;
-                    startButton.update();
-                    startButton.draw();
-					ctx.font = "20px monospace";
-					ctx.fillStyle = "Black";
-					ctx.fillText("When the start button being click", 20, 30);
-					ctx.fillText("the height and width of the game will be fix", 20, 60);
-                }
-            }
-            function startGame() { //start the (game)
-                setInterval(()=>rendering(), 15);
-            }
-            startGame();
-        </script>
-    </body>
+			function end() {
+				var context = txr.value;
+				a.download = "LOL.txt";
+				a.href = URL.createObjectURL(new Blob([String(context)]));
+			}
+		</script>
+	</body>
 </html>

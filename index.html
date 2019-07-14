@@ -3,8 +3,9 @@
 	</head>
 	<body onload="onload();" style="background-color:#616161;">
 		<textarea id ="form" style="background-color:#282C34;width:300px;height:100px;position:absolute;top:60px;left:10px;font-family:Comic Sans MS;font-size:20px;color:#FFFFFF;">something shitt i wantted</textarea>
-		<button style= "background-color:#FF355D;position:absolute;top:10px;left:10px;width:130px;height:40px;font-family:Comic Sans MS;" onclick="end()"><font style="font-family:Microsoft YaHei;font-size:1.1em;">確認檔案</font></button>
-		<a id="output" style="position:absolute;top:18px;left:160px;"><font style="font-family:Microsoft YaHei;font-size:1.2em;" color="#FFFFFF">等待確認:P</font></a>
+		<button style= "background-color:#48CF86;position:absolute;top:10px;left:10px;width:130px;height:40px;font-family:Comic Sans MS;" onclick="end()"><font style="font-family:Microsoft YaHei;font-size:1.1em;">確認檔案</font></button>
+		<a id="output" style="position:absolute;top:18px;left:160px;"><font id ="status" style="font-family:Microsoft YaHei;font-size:1.2em;" color="#FB304D">等待確認:P</font></a>
+		<input id="upd" type="file" style="position:absolute;top:18px;left:260px;">
 		<script>
 			var onload = () => {txr = document.getElementById("form");a = document.getElementById("output");var itval = setInterval("main()",60);}
 			function main() {
@@ -12,25 +13,40 @@
 				txr.style.width = window.innerWidth-20;
 			}
 			function end() {
-				var viab = []
-				viab[0] = "";
+				command = "";
+				var name;
 				var context = txr.value;
-				if (/Xx#name/g.test(context)) {
+				if (/Xx#/g.test(context)) {
 					if (/#$/.test(context)) {
-						for (i = (/Xx#name/g.exec(context)["index"]+7);;i++) {
+						for (i = (/Xx#/g.exec(context)["index"]+3);;i++) {
 							if (context[i] == "#") {
 								break;
 							}
-							viab[0] += context[i];
+							command += context[i];
+						}
+						try {
+							eval(command);
+						}
+						catch {
+							alert("指令打錯...")
 						}
 					}
 					else {
 						alert("結尾找不到#標籤...")
 					}
 				}
-				a.download = String(viab[0]);
+				a.download = name;
 				a.href = URL.createObjectURL(new Blob([String(context)]));
-				console.log(context.replace(new RegExp("[^(Xx#name)]","g"),""));
+				document.getElementById("status").innerHTML = "ok可以下載了";
+				document.getElementById("status").color="#FFFFFF";
+			}
+			function ReadFile(Blob) {
+				var a = new FileReader();
+				a.onload = function (e) {
+					out = e.target.result;
+				}
+				a.readAsText(Blob);
+				return out;
 			}
 		</script>
 	</body>

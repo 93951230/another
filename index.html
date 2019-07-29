@@ -1,53 +1,68 @@
 <html>
 	<head>
 	</head>
-	<body onload="onload();" style="background-color:#616161;">
-		<textarea id ="form" style="background-color:#282C34;width:300px;height:100px;position:absolute;top:60px;left:10px;font-family:Comic Sans MS;font-size:20px;color:#FFFFFF;">something shitt i wantted</textarea>
-		<button style= "background-color:#48CF86;position:absolute;top:10px;left:10px;width:130px;height:40px;font-family:Comic Sans MS;" onclick="end()"><font style="font-family:Microsoft YaHei;font-size:1.1em;">確認檔案</font></button>
-		<a id="output" style="position:absolute;top:18px;left:160px;"><font id ="status" style="font-family:Microsoft YaHei;font-size:1.2em;" color="#FB304D">等待確認:P</font></a>
-		<input id="upd" type="file" style="position:absolute;top:18px;left:260px;">
+	<body>
+		<canvas id="canvas" style="position:absolute;top:0px;left:0px;"></canvas>
+		<img id="game_start" style="display: none;" src="resource/gui/start.png">
 		<script>
-			var onload = () => {txr = document.getElementById("form");a = document.getElementById("output");var itval = setInterval("main()",60);}
-			function main() {
-				txr.style.height = window.innerHeight-70;
-				txr.style.width = window.innerWidth-20;
+			var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            canvas.height = innerHeight;
+            canvas.width = innerWidth;
+			var game_start = false;
+			var game_button = [];
+			function button_create(img,x,y,width,height,command,drawMethod) {
+                this.draw_img = img;
+				this.height = height;
+				this.width = width;
+				this.x = x;
+				this.y = y;
+				this.drawMethod = drawMethod;
+				this.command = command;
+                this.draw = function () {
+                    eval(this.drawMethod);
+                }
 			}
-			function end() {
-				command = "";
-				var name;
-				var context = txr.value;
-				if (/Xx#/g.test(context)) {
-					if (/#$/.test(context)) {
-						for (i = (/Xx#/g.exec(context)["index"]+3);;i++) {
-							if (context[i] == "#") {
-								break;
-							}
-							command += context[i];
-						}
-						try {
-							eval(command);
-						}
-						catch {
-							alert("指令打錯...")
-						}
+			var gene_bg = new function () {
+				this.rgb = [44,176,214];
+				this.draw_bg = function () {
+					ctx.beginPath();
+					ctx.fillStyle ="rgb(" + this.rgb[0] + "," + this.rgb[1] + "," + this.rgb[2] + ")";
+					ctx.rect(0, 0, canvas.width, canvas.height);
+					ctx.fill();
+					this.rgb[2] += 1;
+					ctx.closePath();
+				}
+			}
+			function mouse(e) {
+				if (e.buttons == 1) {
+					if (game_start) {
+
 					}
 					else {
-						alert("結尾找不到#標籤...")
+						start_button = null;
+						game_start = !game_start;
 					}
 				}
-				a.download = name;
-				a.href = URL.createObjectURL(new Blob([String(context)]));
-				document.getElementById("status").innerHTML = "ok可以下載了";
-				document.getElementById("status").color="#FFFFFF";
 			}
-			function ReadFile(Blob) {
-				var a = new FileReader();
-				a.onload = function (e) {
-					out = e.target.result;
+			document.addEventListener("mousedown", mouse, false);
+			start_button = new button_create(document.getElementById("game_start"),10,10,100,100,"","ctx.drawImage(this.draw_img,this.x,this.y);");
+			function game_render() {
+				if (game_start) {
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					for (i = 0;i < game_button.length;i++) {
+						game_button[i].draw();
+					}
 				}
-				a.readAsText(Blob);
-				return out;
+				else {
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					canvas.width = innerWidth;
+					canvas.height = innerHeight;
+					gene_bg.draw_bg();
+					start_button.draw();
+				}
 			}
+			var game_loop = setInterval("game_render()",30);
 		</script>
 	</body>
 </html>

@@ -24,18 +24,22 @@
                 }
 			}
 			var gene_bg = new function () {
-				this.rgb = [256,10,85];
+				this.rgb = [210,10,85];
 				this.overRed = 0;
+				this.overGreen = 0;
 				this.overBlue = 0;
 				this.draw_bg = function () {
 					ctx.beginPath();
 					ctx.fillStyle ="rgb(" + this.rgb[0] + "," + this.rgb[1] + "," + this.rgb[2] + ")";
 					ctx.rect(0, 0, canvas.width, canvas.height);
 					ctx.fill();
-					if ((this.rgb[0] > 256) || (this.rgb[0] < 80)) {
+					if ((this.rgb[0] > 220) || (this.rgb[0] < 80)) {
 						this.overRed += 1;
 					}
-					if ((this.rgb[2] > 256) || (this.rgb[2] < 80)) {
+					if ((this.rgb[1] > 100) || (this.rgb[1] < 5)) {
+						this.overGreen += 1;
+					}
+					if ((this.rgb[2] > 220) || (this.rgb[2] < 80)) {
 						this.overBlue += 1;
 					}
 					if (this.overRed%2 == 1) {
@@ -44,12 +48,19 @@
 					else {
 						this.rgb[0] += 0.5;
 					}
+					if (this.overGreen%2 == 1) {
+						this.rgb[1] -= 0.4;
+					}
+					else {
+						this.rgb[1] += 0.4;
+					}
 					if (this.overBlue%2 == 1) {
 						this.rgb[2] -= 0.5;
 					}
 					else {
 						this.rgb[2] += 0.5;
 					}
+
 					ctx.closePath();
 				}
 			}

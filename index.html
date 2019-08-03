@@ -12,16 +12,16 @@
 			var game_start = false;
 			var game_button = [];
 			var game_tile = [];
-			if (/[?]/.test(location.href)) {
+			if ((/(fbclid)/.test(location.search)) || (!(/[?]/.test(location.href)))) {
+				location.search = "?xr="+Math.round(256*Math.random()) +"&xg="+Math.round(256*Math.random())+"&xb="+Math.round(256*Math.random())+"&yr="+Math.round(256*Math.random())+"&yg="+Math.round(256*Math.random())+"&yb="+Math.round(256*Math.random());
+			}
+			else {
 				var xr = eval(location.search.split("?")[1].split("&")[0].split("=")[1]);
 				var xg = eval(location.search.split("?")[1].split("&")[1].split("=")[1]);
 				var xb = eval(location.search.split("?")[1].split("&")[2].split("=")[1]);
 				var yr = eval(location.search.split("?")[1].split("&")[3].split("=")[1]);
 				var yg = eval(location.search.split("?")[1].split("&")[4].split("=")[1]);
 				var yb = eval(location.search.split("?")[1].split("&")[5].split("=")[1]);
-			}
-			else {
-				location.search = "?xr="+Math.round(256*Math.random()) +"&xg="+Math.round(256*Math.random())+"&xb="+Math.round(256*Math.random())+"&yr="+Math.round(256*Math.random())+"&yg="+Math.round(256*Math.random())+"&yb="+Math.round(256*Math.random());
 			}
 			function button_create(img,x,y,width,height,command,drawMethod) {
                 this.draw_img = img;

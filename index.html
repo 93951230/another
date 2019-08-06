@@ -13,15 +13,12 @@
 			var game_button = [];
 			var game_tile = [];
 			if ((/(fbclid)/.test(location.search)) || (!(/[?]/.test(location.href)))) {
-				location.search = "?xr="+Math.round(256*Math.random()) +"&xg="+Math.round(256*Math.random())+"&xb="+Math.round(256*Math.random())+"&yr="+Math.round(256*Math.random())+"&yg="+Math.round(256*Math.random())+"&yb="+Math.round(256*Math.random());
+				location.search = "?xrgb=["+Math.round(256*Math.random())+","+Math.round(256*Math.random())+","+Math.round(256*Math.random())+"]"+"&yrgb=["+Math.round(256*Math.random())+","+Math.round(256*Math.random())+","+Math.round(256*Math.random())+"]"+"&size=["+Number(prompt("Width"))+","+Number(prompt("Height"))+"]&gap="+Number(prompt("Gap"));
 			}
 			else {
-				var xr = eval(location.search.split("?")[1].split("&")[0].split("=")[1]);
-				var xg = eval(location.search.split("?")[1].split("&")[1].split("=")[1]);
-				var xb = eval(location.search.split("?")[1].split("&")[2].split("=")[1]);
-				var yr = eval(location.search.split("?")[1].split("&")[3].split("=")[1]);
-				var yg = eval(location.search.split("?")[1].split("&")[4].split("=")[1]);
-				var yb = eval(location.search.split("?")[1].split("&")[5].split("=")[1]);
+				for (i=0;i<location.search.split("?")[1].split("&").length;i++) {
+					eval(location.search.split("?")[1].split("&")[i]);
+				}
 			}
 			function button_create(img,x,y,width,height,command,drawMethod) {
                 this.draw_img = img;
@@ -91,7 +88,7 @@
 					ctx.closePath();
 				}
 			}
-			function gene_tile_iter(rgb1,rgb2,vi,vj) {
+			function gene_tile_iter(rgb1,rgb2,vi,vj,gap) {
 				game_i = vi;
 				game_j = vj;
 				if (rgb1[0] < rgb2[0]) {
@@ -127,7 +124,7 @@
 				for (i=0;i < vi;i++) {
 					game_tile[i] = [];
 					for (j=0;j < vj;j++) {
-						game_tile[i][j] = new gene_tile([rgb1[0]+eval(pattern_1),rgb1[1]+eval(pattern_2),rgb1[2]+eval(pattern_3)],i*(((innerHeight-((vj-1)*5))/vj)+5),j*(((innerHeight-((vj-1)*5))/vj)+5),(innerHeight-((vj-1)*5))/vj,(innerHeight-((vj-1)*5))/vj);
+						game_tile[i][j] = new gene_tile([rgb1[0]+eval(pattern_1),rgb1[1]+eval(pattern_2),rgb1[2]+eval(pattern_3)],i*(((innerHeight-((vj-1)*gap))/vj)+gap),j*(((innerHeight-((vj-1)*gap))/vj)+gap),(innerHeight-((vj-1)*gap))/vj,(innerHeight-((vj-1)*gap))/vj);
 					}
 				}
 			}
@@ -139,7 +136,7 @@
 					else {
 						start_button = null;
 
-						gene_tile_iter([xr,xg,xb],[yr,yg,yb],prompt("width"),prompt("height"))
+						gene_tile_iter(xrgb,yrgb,size[0],size[1],gap));
 						game_start = !game_start;
 					}
 				}

@@ -135,8 +135,9 @@
 					}
 					else {
 						start_button = null;
-
-						gene_tile_iter(xrgb,yrgb,size[0],size[1],gap);
+						width = size[0];
+						height = size[1];
+						gene_tile_iter(xrgb,yrgb,width,height,gap);
 						game_start = !game_start;
 					}
 				}
